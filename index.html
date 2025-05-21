@@ -15,6 +15,8 @@
             --dark: #1E293B;
             --light: #F8FAFC;
         }
+      <div id="auth-buttons"></div>
+
         body {
             font-family: 'Montserrat', sans-serif;
             scroll-behavior: smooth;
@@ -647,5 +649,35 @@
         window.addEventListener("scroll", reveal);
         reveal(); // Call once on load
     </script>
-</body>
+<script><script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js">
+
+let auth0Client = null;
+
+async function configureClient() {
+  auth0Client = await createAuth0Client({
+    domain: 'dev-mx1dbf2wzsyfmwgm.eu.auth0.com',
+    clientId: 'UOvdj58BqA67IYqhdifuXhKjzieU3OyE',
+    redirect_uri: window.location.origin
+  });
+
+  // Ici, tu peux afficher les boutons de login/logout selon l’état
+  const isAuthenticated = await auth0Client.isAuthenticated();
+  const authButtonsDiv = document.getElementById('auth-buttons');
+
+  if (isAuthenticated) {
+    const user = await auth0Client.getUser();
+    authButtonsDiv.innerHTML = `
+      <span>Bienvenue, ${user.name || user.email} !</span>
+      <button onclick="auth0Client.logout({ returnTo: window.location.origin })">Se déconnecter</button>
+    `;
+  } else {
+    authButtonsDiv.innerHTML = `
+      <button onclick="auth0Client.loginWithRedirect()">Se connecter</button>
+    `;
+  }
+}
+
+window.onload = configureClient;
+
+</script></body>
 </html>
