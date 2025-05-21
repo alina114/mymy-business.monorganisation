@@ -15,8 +15,6 @@
             --dark: #1E293B;
             --light: #F8FAFC;
         }
-      <div id="auth-buttons"></div>
-
         body {
             font-family: 'Montserrat', sans-serif;
             scroll-behavior: smooth;
@@ -142,6 +140,7 @@
             <i class="fas fa-bars"></i>
         </button>
     </div>
+   <div id="auth-buttons" class="my-6"></div>
     <div id="sidebar" class="sidebar fixed h-full w-64 bg-white shadow-xl z-40 overflow-y-auto">
         <div class="p-6">
             <div class="flex items-center justify-center mb-8">
@@ -440,11 +439,6 @@
         </section>
         
         
-        
-        
-        
-        
-        
         <section id="contact" class="py-24 bg-gradient-to-b from-slate-50 to-white">
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto text-center mb-16 reveal">
@@ -634,50 +628,62 @@
         // Reveal animations
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
-            
             for (let i = 0; i < reveals.length; i++) {
                 const windowHeight = window.innerHeight;
                 const elementTop = reveals[i].getBoundingClientRect().top;
                 const elementVisible = 150;
-                
                 if (elementTop < windowHeight - elementVisible) {
                     reveals[i].classList.add("active");
                 }
             }
         }
-
         window.addEventListener("scroll", reveal);
         reveal(); // Call once on load
     </script>
-<script><script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js">
 
-let auth0Client = null;
+    <!-- Auth0 SPA SDK -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+    <script>
+    let auth0Client = null;
 
-async function configureClient() {
-  auth0Client = await createAuth0Client({
-    domain: 'dev-mx1dbf2wzsyfmwgm.eu.auth0.com',
-    clientId: 'UOvdj58BqA67IYqhdifuXhKjzieU3OyE',
-    redirect_uri: window.location.origin
-  });
+    async function configureClient() {
+      auth0Client = await createAuth0Client({
+        domain: 'dev-mx1dbf2wzsyfmwgm.eu.auth0.com',
+        clientId: 'UOvdj58BqA67IYqhdifuXhKjzieU3OyE',
+        redirect_uri: window.location.origin
+      });
 
-  // Ici, tu peux afficher les boutons de login/logout selon l’état
-  const isAuthenticated = await auth0Client.isAuthenticated();
-  const authButtonsDiv = document.getElementById('auth-buttons');
+      // Gère le retour après login Auth0
+      if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
+        await auth0Client.handleRedirectCallback();
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
 
-  if (isAuthenticated) {
-    const user = await auth0Client.getUser();
-    authButtonsDiv.innerHTML = `
-      <span>Bienvenue, ${user.name || user.email} !</span>
-      <button onclick="auth0Client.logout({ returnTo: window.location.origin })">Se déconnecter</button>
-    `;
-  } else {
-    authButtonsDiv.innerHTML = `
-      <button onclick="auth0Client.loginWithRedirect()">Se connecter</button>
-    `;
-  }
-}
+      const isAuthenticated = await auth0Client.isAuthenticated();
+      const authButtonsDiv = document.getElementById('auth-buttons');
 
-window.onload = configureClient;
+      if (authButtonsDiv) {
+        if (isAuthenticated) {
+          const user = await auth0Client.getUser();
+          authButtonsDiv.innerHTML = `
+            <span class="mr-4">Bienvenue, ${user.name || user.email} !</span>
+            <button class="btn-outline py-2 px-4 rounded" id="logout-btn">Se déconnecter</button>
+          `;
+          document.getElementById('logout-btn').addEventListener('click', function() {
+            auth0Client.logout({ logoutParams: { returnTo: window.location.origin } });
+          });
+        } else {
+          authButtonsDiv.innerHTML = `
+            <button class="btn-primary py-2 px-4 rounded text-white" id="login-btn">Se connecter</button>
+          `;
+          document.getElementById('login-btn').addEventListener('click', function() {
+            auth0Client.loginWithRedirect();
+          });
+        }
+      }
+    }
 
-</script></body>
+    window.addEventListener('DOMContentLoaded', configureClient);
+    </script>
+</body>
 </html>
