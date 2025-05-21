@@ -149,13 +149,17 @@
             </div>
             <h2 class="text-xl font-bold">Mymy Business</h2>
         </div>
-        
+        <div id="auth-buttons" class="my-6">
+    <button id="login-btn" class="flex items-center justify-center p-4 mb-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all">
+        <i class="fas fa-sign-in-alt mr-2"></i>
+        <span>Se connecter</span>
+    </button>
+    <!-- ...autres liens... -->
+</div>
+
         <!-- Ajout des boutons d'authentification -->
         <div id="auth-buttons" class="my-6">
-            <a href="#login" class="flex items-center justify-center p-2 mb-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all">
-                <i class="fas fa-sign-in-alt mr-2"></i>
-                <span>Se connecter</span>
-            </a>
+            
             <a href="Guide complet" data-page-id="682dcd060ff7607201891eb8" class="flex items-center justify-center p-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-all">
                 <i class="fas fa-book mr-2"></i>
                 <span>Accéder au guide complet</span>
@@ -698,5 +702,12 @@
 
     window.addEventListener('DOMContentLoaded', configureClient);
     </script>
-</body>
+<script>const loginBtn = document.getElementById('login-btn');
+if (loginBtn) {
+  loginBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    auth0Client.loginWithRedirect();
+  });
+}
+</script></body>
 </html>
