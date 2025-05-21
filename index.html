@@ -129,9 +129,14 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .hidden {
+            display: none !important;
+        }
     </style>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="description" content="Un guide pratique pour organiser efficacement votre temps, optimiser votre espace de travail et développer un état d'esprit gagnant.">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800">
     <div class="progress-bar" id="progressBar"></div>
@@ -140,99 +145,84 @@
             <i class="fas fa-bars"></i>
         </button>
     </div>
-   <div id="auth-buttons" class="my-6"></div>
+    <div id="auth-buttons" class="my-6 flex items-center justify-end px-6"></div>
     <div id="sidebar" class="sidebar fixed h-full w-64 bg-white shadow-xl z-40 overflow-y-auto">
-    <div class="p-6">
-        <div class="flex items-center justify-center mb-8">
-            <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white mr-3">
-                <img src="https://d1olmvoet3matb.cloudfront.net/EvchaseYz9/images/2ebcc0c202ab08a6.png" data-initial="true">
+        <div class="p-6">
+            <div class="flex items-center justify-center mb-8">
+                <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white mr-3">
+                    <img src="https://d1olmvoet3matb.cloudfront.net/EvchaseYz9/images/2ebcc0c202ab08a6.png" data-initial="true">
+                </div>
+                <h2 class="text-xl font-bold">Mymy Business</h2>
             </div>
-            <h2 class="text-xl font-bold">Mymy Business</h2>
-        </div>
-        <div id="auth-buttons" class="my-6">
-    <button id="login-btn" class="flex items-center justify-center p-4 mb-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all">
-        <i class="fas fa-sign-in-alt mr-2"></i>
-        <span>Se connecter</span>
-    </button>
-    <!-- ...autres liens... -->
-</div>
-
-        <!-- Ajout des boutons d'authentification -->
-        <div id="auth-buttons" class="my-6">
-            
-            <a href="Guide complet" data-page-id="682dcd060ff7607201891eb8" class="flex items-center justify-center p-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-all">
-                <i class="fas fa-book mr-2"></i>
-                <span>Accéder au guide complet</span>
-            </a>
-        </div>
-        
-        <nav>
-            <ul class="space-y-4">
-                <li>
-                    <a href="#hero" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all">
-                        <i class="fas fa-home w-6"></i>
-                        <span>Accueil</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#introduction" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all">
-                        <i class="fas fa-info-circle w-6"></i>
-                        <span>Introduction</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Guide complet" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all" data-page-id="682dcd060ff7607201891eb8" id="page-link">
-                        <i class="fas fa-brain w-6"></i>
-                        <span>État d'esprit gagnant</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Guide complet" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all" data-page-id="682dcd060ff7607201891eb8" id="page-link">
-                        <i class="fas fa-clock w-6"></i>
-                        <span>Maîtriser son temps</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Guide complet" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all" data-page-id="682dcd060ff7607201891eb8" id="page-link">
-                        <i class="fas fa-laptop-house w-6"></i>
-                        <span>Espace de travail</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Guide complet" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all" data-page-id="682dcd060ff7607201891eb8" id="page-link">
-                        <i class="fas fa-balance-scale w-6"></i>
-                        <span>Équilibre de vie</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Guide complet" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all" data-page-id="682dcd060ff7607201891eb8" id="page-link">
-                        <i class="fas fa-flag-checkered w-6"></i>
-                        <span>Conclusion</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Guide complet" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all" data-page-id="682dcd060ff7607201891eb8" id="page-link">
-                        <i class="fas fa-clipboard-list w-6"></i>
-                        <span>Check-listes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Guide complet" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all" data-page-id="682dcd060ff7607201891eb8" id="page-link">
-                        <i class="fas fa-dumbbell w-6"></i>
-                        <span>Exercices pratiques</span>
-                    </a><a href="Guide complet" id="page-link" data-page-id="682dcd060ff7607201891eb8" class="text-gray-700 hover:text-blue-500">Guide complet</a>
-                </li>
-            </ul>
-        </nav>
-        <div class="mt-12 p-4 bg-indigo-50 rounded-lg">
-            <h3 class="font-semibold mb-2">Besoin d'aide ?</h3>
-            <p class="text-sm text-slate-600 mb-3">Des questions sur le contenu ou les exercices ?</p>
-            <a href="#contact" class="text-indigo-600 text-sm flex items-center">
-                <i class="fas fa-envelope mr-2"></i> Contactez-nous
-            </a>
+            <div id="sidebar-auth-buttons" class="my-6"></div>
+            <div id="sidebar-guide-link" class="my-6"></div>
+            <nav>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="#hero" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all">
+                            <i class="fas fa-home w-6"></i>
+                            <span>Accueil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#introduction" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all">
+                            <i class="fas fa-info-circle w-6"></i>
+                            <span>Introduction</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all guide-link" data-page-id="682dcd060ff7607201891eb8" id="sidebar-mindset-link">
+                            <i class="fas fa-brain w-6"></i>
+                            <span>État d'esprit gagnant</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all guide-link" data-page-id="682dcd060ff7607201891eb8" id="sidebar-time-link">
+                            <i class="fas fa-clock w-6"></i>
+                            <span>Maîtriser son temps</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all guide-link" data-page-id="682dcd060ff7607201891eb8" id="sidebar-space-link">
+                            <i class="fas fa-laptop-house w-6"></i>
+                            <span>Espace de travail</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all guide-link" data-page-id="682dcd060ff7607201891eb8" id="sidebar-balance-link">
+                            <i class="fas fa-balance-scale w-6"></i>
+                            <span>Équilibre de vie</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all guide-link" data-page-id="682dcd060ff7607201891eb8" id="sidebar-conclusion-link">
+                            <i class="fas fa-flag-checkered w-6"></i>
+                            <span>Conclusion</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all guide-link" data-page-id="682dcd060ff7607201891eb8" id="sidebar-checklist-link">
+                            <i class="fas fa-clipboard-list w-6"></i>
+                            <span>Check-listes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 rounded-lg hover:bg-indigo-50 transition-all guide-link" data-page-id="682dcd060ff7607201891eb8" id="sidebar-exercises-link">
+                            <i class="fas fa-dumbbell w-6"></i>
+                            <span>Exercices pratiques</span>
+                        </a><a href="#" id="sidebar-guide-complet-link" data-page-id="682dcd060ff7607201891eb8" class="text-gray-700 hover:text-blue-500 guide-link">Guide complet</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="mt-12 p-4 bg-indigo-50 rounded-lg">
+                <h3 class="font-semibold mb-2">Besoin d'aide ?</h3>
+                <p class="text-sm text-slate-600 mb-3">Des questions sur le contenu ou les exercices ?</p>
+                <a href="#contact" class="text-indigo-600 text-sm flex items-center">
+                    <i class="fas fa-envelope mr-2"></i> Contactez-nous
+                </a>
+            </div>
         </div>
     </div>
-</div>
     <main class="md:ml-64 min-h-screen">
         <section id="hero" class="relative min-h-screen flex items-center justify-center hero-gradient text-white overflow-hidden">
             <div class="animated-bg">
@@ -391,7 +381,7 @@
                         </div>
                         <h3 class="text-xl font-bold mb-3">Partie 1 : Développer un état d'esprit gagnant</h3>
                         <p class="text-slate-600 mb-4">Le succès d'un infopreneur commence bien avant la création de contenu ou la mise en place de stratégies marketing. Il débute avec un état d'esprit ada...</p>
-                        <a href="#part1" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <a href="#" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors guide-link" data-page-id="682dcd060ff7607201891eb8">
                             Lire cette partie
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -402,7 +392,7 @@
                         </div>
                         <h3 class="text-xl font-bold mb-3">Partie 2 : Maîtriser son temps</h3>
                         <p class="text-slate-600 mb-4">Pour un infopreneur, le temps est à la fois une ressource limitée et un allié précieux. Cette section vous aidera à identifier vos "voleurs de temps",...</p>
-                        <a href="#part2" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <a href="#" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors guide-link" data-page-id="682dcd060ff7607201891eb8">
                             Lire cette partie
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -413,7 +403,7 @@
                         </div>
                         <h3 class="text-xl font-bold mb-3">Partie 3 : Optimiser son espace de travail</h3>
                         <p class="text-slate-600 mb-4">L'environnement dans lequel vous créez votre contenu influence directement votre productivité, votre créativité et votre bien-être. Cette section vous...</p>
-                        <a href="#part3" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <a href="#" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors guide-link" data-page-id="682dcd060ff7607201891eb8">
                             Lire cette partie
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -424,7 +414,7 @@
                         </div>
                         <h3 class="text-xl font-bold mb-3">Partie 4 : Concilier vie professionnelle, personnelle et familiale</h3>
                         <p class="text-slate-600 mb-4">L'un des plus grands défis des infopreneurs est de maintenir un équilibre sain entre la création de contenu, la vie personnelle et les responsabilités...</p>
-                        <a href="#part4" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <a href="#" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors guide-link" data-page-id="682dcd060ff7607201891eb8">
                             Lire cette partie
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -435,7 +425,7 @@
                         </div>
                         <h3 class="text-xl font-bold mb-3">Conclusion</h3>
                         <p class="text-slate-600 mb-4">L'équilibre entre création de contenu et vie personnelle pour un infopreneur est un processus continu qui nécessite attention et ajustements réguliers...</p>
-                        <a href="#conclusion" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <a href="#" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors guide-link" data-page-id="682dcd060ff7607201891eb8">
                             Lire cette partie
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -446,7 +436,7 @@
                         </div>
                         <h3 class="text-xl font-bold mb-3">Annexe : Check-listes rapides</h3>
                         <p class="text-slate-600 mb-4">Découvrez les concepts et exercices de cette partie.</p>
-                        <a href="#annexe" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <a href="#" class="inline-flex items-center font-medium text-indigo-600 hover:text-indigo-800 transition-colors guide-link" data-page-id="682dcd060ff7607201891eb8">
                             Lire cette partie
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -454,8 +444,6 @@
                 </div>
             </div>
         </section>
-        
-        
         <section id="contact" class="py-24 bg-gradient-to-b from-slate-50 to-white">
             <div class="container mx-auto px-6">
                 <div class="max-w-4xl mx-auto text-center mb-16 reveal">
@@ -500,17 +488,14 @@
                                                 <i class="fab fa-facebook text-xl"></i>
                                             </a>
                                             <a href="#" class="text-white hover:text-indigo-200 transition-colors">
-                                                
                                             </a>
                                             <a href="#" class="text-white hover:text-indigo-200 transition-colors">
-                                                
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-10">
-                                
                                 <p class="text-indigo-100 mb-4">Recevez nos conseils et astuces pour optimiser votre productivité.</p>
                                 <div class="flex">
                                     <input type="email" placeholder="Votre email" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-slate-800">
@@ -567,10 +552,8 @@
                                 <i class="fab fa-facebook"></i>
                             </a>
                             <a href="#" class="text-slate-400 hover:text-white transition-colors">
-                                
                             </a>
                             <a href="#" class="text-slate-400 hover:text-white transition-colors">
-                                
                             </a>
                         </div>
                     </div>
@@ -589,18 +572,15 @@
                             <li>
                                 <a href="#exercises" class="text-slate-400 hover:text-white transition-colors">Exercices pratiques</a>
                             </li>
-                            
                         </ul>
                     </div>
                     <div>
                         <h4 class="text-lg font-bold mb-6">Ressources</h4>
                         <ul class="space-y-3">
-                            
                             <li>
                                 <a href="#" class="text-slate-400 hover:text-white transition-colors">Podcast</a>
                             </li>
                             <li>
-                                
                             </li>
                             <li>
                                 <a href="#" class="text-slate-400 hover:text-white transition-colors">Formations</a>
@@ -610,7 +590,6 @@
                             </li>
                         </ul>
                     </div>
-                    
                 </div>
                 <div class="border-t border-slate-800 mt-12 pt-8 text-center">
                     <p class="text-slate-400">© 2023 Mymy Business. Tous droits réservés.</p>
@@ -618,22 +597,16 @@
             </div>
         </footer>
     </main>
-
     <script>
-        // Progress bar
         window.addEventListener('scroll', function() {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById("progressBar").style.width = scrolled + "%";
         });
-
-        // Sidebar toggle
         document.getElementById('sidebarToggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('open');
         });
-
-        // Close sidebar when clicking on a link (mobile)
         document.querySelectorAll('#sidebar a').forEach(link => {
             link.addEventListener('click', function() {
                 if (window.innerWidth < 768) {
@@ -641,8 +614,6 @@
                 }
             });
         });
-
-        // Reveal animations
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
             for (let i = 0; i < reveals.length; i++) {
@@ -655,59 +626,245 @@
             }
         }
         window.addEventListener("scroll", reveal);
-        reveal(); // Call once on load
+        reveal();
     </script>
-
-    <!-- Auth0 SPA SDK -->
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script>
-    let auth0Client = null;
-
-    async function configureClient() {
-      auth0Client = await createAuth0Client({
-        domain: 'dev-mx1dbf2wzsyfmwgm.eu.auth0.com',
-        clientId: 'UOvdj58BqA67IYqhdifuXhKjzieU3OyE',
-        redirect_uri: window.location.origin
-      });
-
-      // Gère le retour après login Auth0
-      if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
-        await auth0Client.handleRedirectCallback();
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-
-      const isAuthenticated = await auth0Client.isAuthenticated();
-      const authButtonsDiv = document.getElementById('auth-buttons');
-
-      if (authButtonsDiv) {
-        if (isAuthenticated) {
-          const user = await auth0Client.getUser();
-          authButtonsDiv.innerHTML = `
-            <span class="mr-4">Bienvenue, ${user.name || user.email} !</span>
-            <button class="btn-outline py-2 px-4 rounded" id="logout-btn">Se déconnecter</button>
-          `;
-          document.getElementById('logout-btn').addEventListener('click', function() {
-            auth0Client.logout({ logoutParams: { returnTo: window.location.origin } });
-          });
-        } else {
-          authButtonsDiv.innerHTML = `
-            <button class="btn-primary py-2 px-4 rounded text-white" id="login-btn">Se connecter</button>
-          `;
-          document.getElementById('login-btn').addEventListener('click', function() {
-            auth0Client.loginWithRedirect();
-          });
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6Q6vGvQb7n3rOZ9kVt1Qd0NnCwZ9p7j0",
+            authDomain: "mymybusiness-guide.firebaseapp.com",
+            projectId: "mymybusiness-guide",
+            storageBucket: "mymybusiness-guide.appspot.com",
+            messagingSenderId: "1030583672903",
+            appId: "1:1030583672903:web:9e5d3c3e2d6c0d2c5d6e8e"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        function renderAuthButtons(user) {
+            const authButtonsDiv = document.getElementById('auth-buttons');
+            const sidebarAuthDiv = document.getElementById('sidebar-auth-buttons');
+            if (user) {
+                authButtonsDiv.innerHTML = `<span class="mr-4">Bienvenue, ${user.displayName ? user.displayName : user.email} !</span>
+                    <button class="btn-outline py-2 px-4 rounded" id="logout-btn-main">Se déconnecter</button>`;
+                sidebarAuthDiv.innerHTML = `<span class="mr-4">Bonjour, ${user.displayName ? user.displayName : user.email}</span>
+                    <button class="btn-outline py-2 px-4 rounded w-full mt-2" id="logout-btn-sidebar">Se déconnecter</button>`;
+            } else {
+                authButtonsDiv.innerHTML = `<button class="btn-primary py-2 px-4 rounded text-white" id="login-btn-main">Se connecter</button>`;
+                sidebarAuthDiv.innerHTML = `<button class="btn-primary py-2 px-4 rounded text-white w-full" id="login-btn-sidebar">Se connecter</button>`;
+            }
+            if (document.getElementById('login-btn-main')) {
+                document.getElementById('login-btn-main').onclick = function() {
+                    showLoginModal();
+                };
+            }
+            if (document.getElementById('login-btn-sidebar')) {
+                document.getElementById('login-btn-sidebar').onclick = function() {
+                    showLoginModal();
+                };
+            }
+            if (document.getElementById('logout-btn-main')) {
+                document.getElementById('logout-btn-main').onclick = function() {
+                    auth.signOut();
+                };
+            }
+            if (document.getElementById('logout-btn-sidebar')) {
+                document.getElementById('logout-btn-sidebar').onclick = function() {
+                    auth.signOut();
+                };
+            }
         }
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', configureClient);
+        function renderGuideCompletLink(user) {
+            const sidebarGuideDiv = document.getElementById('sidebar-guide-link');
+            if (user) {
+                sidebarGuideDiv.innerHTML = `<a href="guide-complet.html" class="flex items-center justify-center p-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-all">
+                    <i class="fas fa-book mr-2"></i>
+                    <span>Accéder au guide complet</span>
+                </a>`;
+            } else {
+                sidebarGuideDiv.innerHTML = `<button class="flex items-center justify-center p-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-all w-full" id="sidebar-guide-login-btn">
+                    <i class="fas fa-book mr-2"></i>
+                    <span>Accéder au guide complet</span>
+                </button>`;
+                document.getElementById('sidebar-guide-login-btn').onclick = function() {
+                    showLoginModal();
+                };
+            }
+        }
+        function handleGuideLinks(user) {
+            document.querySelectorAll('.guide-link').forEach(link => {
+                link.onclick = function(e) {
+                    e.preventDefault();
+                    if (user) {
+                        window.location.href = "guide-complet.html";
+                    } else {
+                        showLoginModal();
+                    }
+                };
+            });
+        }
+        function showLoginModal() {
+            if (document.getElementById('firebase-login-modal')) {
+                document.getElementById('firebase-login-modal').classList.remove('hidden');
+                return;
+            }
+            const modal = document.createElement('div');
+            modal.id = "firebase-login-modal";
+            modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60";
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-lg max-w-sm w-full p-8 relative">
+                    <button id="close-login-modal" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700"><i class="fas fa-times"></i></button>
+                    <h3 class="text-2xl font-bold mb-6 text-center">Connexion</h3>
+                    <form id="firebase-login-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                            <input type="email" id="login-email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Mot de passe</label>
+                            <input type="password" id="login-password" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <button type="submit" class="w-full btn-primary text-white py-2 px-4 rounded-lg font-semibold">Se connecter</button>
+                        <div class="text-center mt-2">
+                            <button type="button" id="google-login-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center justify-center"><i class="fab fa-google mr-2"></i> Connexion Google</button>
+                        </div>
+                        <div class="text-center mt-4">
+                            <span class="text-slate-500 text-sm">Pas encore de compte ? <a href="#" id="show-register" class="text-indigo-600 hover:underline">Créer un compte</a></span>
+                        </div>
+                        <div class="text-center mt-2">
+                            <a href="#" id="show-reset" class="text-indigo-500 text-xs hover:underline">Mot de passe oublié ?</a>
+                        </div>
+                        <div id="login-error" class="text-red-500 text-sm mt-2 hidden"></div>
+                    </form>
+                    <form id="firebase-register-form" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                            <input type="email" id="register-email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Mot de passe</label>
+                            <input type="password" id="register-password" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <button type="submit" class="w-full btn-primary text-white py-2 px-4 rounded-lg font-semibold">Créer un compte</button>
+                        <div class="text-center mt-2">
+                            <button type="button" id="google-register-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center justify-center"><i class="fab fa-google mr-2"></i> Inscription Google</button>
+                        </div>
+                        <div class="text-center mt-4">
+                            <span class="text-slate-500 text-sm">Déjà inscrit ? <a href="#" id="show-login" class="text-indigo-600 hover:underline">Se connecter</a></span>
+                        </div>
+                        <div id="register-error" class="text-red-500 text-sm mt-2 hidden"></div>
+                    </form>
+                    <form id="firebase-reset-form" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                            <input type="email" id="reset-email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        <button type="submit" class="w-full btn-primary text-white py-2 px-4 rounded-lg font-semibold">Réinitialiser le mot de passe</button>
+                        <div class="text-center mt-4">
+                            <span class="text-slate-500 text-sm">Retour à <a href="#" id="show-login2" class="text-indigo-600 hover:underline">la connexion</a></span>
+                        </div>
+                        <div id="reset-error" class="text-red-500 text-sm mt-2 hidden"></div>
+                        <div id="reset-success" class="text-green-600 text-sm mt-2 hidden"></div>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById('close-login-modal').onclick = function() {
+                modal.classList.add('hidden');
+            };
+            document.getElementById('show-register').onclick = function(e) {
+                e.preventDefault();
+                document.getElementById('firebase-login-form').classList.add('hidden');
+                document.getElementById('firebase-register-form').classList.remove('hidden');
+                document.getElementById('firebase-reset-form').classList.add('hidden');
+            };
+            document.getElementById('show-login').onclick = function(e) {
+                e.preventDefault();
+                document.getElementById('firebase-login-form').classList.remove('hidden');
+                document.getElementById('firebase-register-form').classList.add('hidden');
+                document.getElementById('firebase-reset-form').classList.add('hidden');
+            };
+            document.getElementById('show-login2').onclick = function(e) {
+                e.preventDefault();
+                document.getElementById('firebase-login-form').classList.remove('hidden');
+                document.getElementById('firebase-register-form').classList.add('hidden');
+                document.getElementById('firebase-reset-form').classList.add('hidden');
+            };
+            document.getElementById('show-reset').onclick = function(e) {
+                e.preventDefault();
+                document.getElementById('firebase-login-form').classList.add('hidden');
+                document.getElementById('firebase-register-form').classList.add('hidden');
+                document.getElementById('firebase-reset-form').classList.remove('hidden');
+            };
+            document.getElementById('firebase-login-form').onsubmit = function(e) {
+                e.preventDefault();
+                document.getElementById('login-error').classList.add('hidden');
+                auth.signInWithEmailAndPassword(
+                    document.getElementById('login-email').value,
+                    document.getElementById('login-password').value
+                ).then(() => {
+                    modal.classList.add('hidden');
+                }).catch(err => {
+                    document.getElementById('login-error').textContent = err.message;
+                    document.getElementById('login-error').classList.remove('hidden');
+                });
+            };
+            document.getElementById('firebase-register-form').onsubmit = function(e) {
+                e.preventDefault();
+                document.getElementById('register-error').classList.add('hidden');
+                auth.createUserWithEmailAndPassword(
+                    document.getElementById('register-email').value,
+                    document.getElementById('register-password').value
+                ).then(() => {
+                    modal.classList.add('hidden');
+                }).catch(err => {
+                    document.getElementById('register-error').textContent = err.message;
+                    document.getElementById('register-error').classList.remove('hidden');
+                });
+            };
+            document.getElementById('firebase-reset-form').onsubmit = function(e) {
+                e.preventDefault();
+                document.getElementById('reset-error').classList.add('hidden');
+                document.getElementById('reset-success').classList.add('hidden');
+                auth.sendPasswordResetEmail(document.getElementById('reset-email').value)
+                    .then(() => {
+                        document.getElementById('reset-success').textContent = "Email de réinitialisation envoyé.";
+                        document.getElementById('reset-success').classList.remove('hidden');
+                    })
+                    .catch(err => {
+                        document.getElementById('reset-error').textContent = err.message;
+                        document.getElementById('reset-error').classList.remove('hidden');
+                    });
+            };
+            document.getElementById('google-login-btn').onclick = function(e) {
+                e.preventDefault();
+                const provider = new firebase.auth.GoogleAuthProvider();
+                auth.signInWithPopup(provider).then(() => {
+                    modal.classList.add('hidden');
+                }).catch(err => {
+                    document.getElementById('login-error').textContent = err.message;
+                    document.getElementById('login-error').classList.remove('hidden');
+                });
+            };
+            document.getElementById('google-register-btn').onclick = function(e) {
+                e.preventDefault();
+                const provider = new firebase.auth.GoogleAuthProvider();
+                auth.signInWithPopup(provider).then(() => {
+                    modal.classList.add('hidden');
+                }).catch(err => {
+                    document.getElementById('register-error').textContent = err.message;
+                    document.getElementById('register-error').classList.remove('hidden');
+                });
+            };
+        }
+        auth.onAuthStateChanged(function(user) {
+            renderAuthButtons(user);
+            renderGuideCompletLink(user);
+            handleGuideLinks(user);
+        });
+        window.addEventListener('DOMContentLoaded', function() {
+            renderAuthButtons(auth.currentUser);
+            renderGuideCompletLink(auth.currentUser);
+            handleGuideLinks(auth.currentUser);
+        });
     </script>
-<script>const loginBtn = document.getElementById('login-btn');
-if (loginBtn) {
-  loginBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    auth0Client.loginWithRedirect();
-  });
-}
-</script></body>
+</body>
 </html>
