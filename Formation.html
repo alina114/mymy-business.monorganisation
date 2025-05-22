@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formation</title>
@@ -166,11 +169,7 @@
             </ul>
         </nav>
     </div>
-    <div class="p-4 border-t border-gray-200">
-        <a href="/connexion" class="block py-2 px-4 bg-blue-500 text-white rounded-md text-center hover:bg-blue-600 transition-colors">
-            Connexion
-        </a>
-    </div><div class="p-6">
+    <div class="p-6">
             <div class="flex items-center justify-center mb-8">
                 <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white mr-3">
                     <img src="https://d1olmvoet3matb.cloudfront.net/EvchaseYz9/images/2ebcc0c202ab08a6.png" data-initial="true">
@@ -246,8 +245,8 @@
             </div>
         </div>
 </div>
-    <main class="md:ml-64 min-h-screen">
-        <section id="hero" class="relative min-h-screen flex items-center justify-center hero-gradient text-white overflow-hidden">
+    <main class="md:ml-64 min-h-screen auto-rows-auto">
+        <div id="auth-buttons" class="my-6 flex items-center justify-end px-6"></div><section id="hero" class="relative min-h-screen flex items-center justify-center hero-gradient text-white overflow-hidden  mx-px">
             <div class="animated-bg">
                 <span style="width: 80px; height: 80px; left: 20%; animation-delay: 0s; animation-duration: 18s;"></span>
                 <span style="width: 100px; height: 100px; left: 60%; animation-delay: 2s; animation-duration: 25s;"></span>
@@ -256,12 +255,12 @@
                 <span style="width: 70px; height: 70px; left: 50%; animation-delay: 8s; animation-duration: 22s;"></span>
                 <span style="width: 110px; height: 110px; left: 30%; animation-delay: 10s; animation-duration: 17s;"></span>
             </div>
-            <div id="auth-buttons" class="my-6 flex items-center justify-end px-6"></div><div id="auth-buttons" class="my-6 flex items-center justify-end px-6"></div><div class="container mx-auto px-6 py-24 relative z-10">
-                <div class="flex flex-col md:flex-row items-center">
+            <div id="auth-buttons" class="my-6 flex items-center justify-end px-6"></div><div class="mx-auto px-0 py-24 relative z-10 container max-w-3xl w-full mx-auto items-center">
+                <div class="flex flex-col md:flex-row items-center w-full mx-auto">
                     <div class="md:w-1/2 mb-12 md:mb-0">
-                        <div class="max-w-lg">
+                        <div class="max-w-lg w-full items-center">
                             <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                                Maîtriser son <span class="text-pink-300">tTemps</span>, son <span class="text-pink-300">Espace</span>, et son <span class="text-pink-300">État d'Esprit</span>
+                                Maîtriser son <span class="text-pink-300">Temps</span>, son <span class="text-pink-300">Espace</span>, et son <span class="text-pink-300">État d'Esprit</span>
                             </h1>
                             <h2 class="text-2xl md:text-3xl font-light mb-8">Guide complet pour Infopreneurs</h2>
                             <p class="text-lg mb-10 text-indigo-100">Un guide pratique pour organiser efficacement votre temps, optimiser votre espace de travail et développer un état d'esprit gagnant.</p>
@@ -2382,8 +2381,353 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   
   
-    <nav class="bg-white h-16 flex items-center justify-between px-4 shadow-md">
-      <a href="./" data-index-id="6828da6786f3bf50152bd568" id="index-link" class="text-gray-700 hover:text-blue-500">Accueil</a>
-    </nav>
+   <!-- Menu principal -->
+<div id="site-menu"></div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPUGf5GMDEd-_5Cu7yQy2E2CxO2L4D5YU",
+    authDomain: "mymybusiness-guide.firebaseapp.com",
+    projectId: "authentif-mteede",
+    storageBucket: "mymybusiness-guide.appspot.com",
+    messagingSenderId: "580619782278",
+    appId: "1:1030583672903:web:9e5d3c3e2d6c0d2c5d6e8e"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  function renderAuthButtons(user) {
+    const authButtonsDiv = document.getElementById('auth-buttons');
+    const sidebarAuthDiv = document.getElementById('sidebar-auth-buttons');
+    
+    if (authButtonsDiv && sidebarAuthDiv) {
+      if (user) {
+        authButtonsDiv.innerHTML = `<span class="mr-4">Bienvenue, ${user.displayName ? user.displayName : user.email} !</span>
+          <button class="btn-outline py-2 px-4 rounded" id="logout-btn-main">Se déconnecter</button>`;
+        sidebarAuthDiv.innerHTML = `<span class="mr-4">Bonjour, ${user.displayName ? user.displayName : user.email}</span>
+          <button class="btn-outline py-2 px-4 rounded w-full mt-2" id="logout-btn-sidebar">Se déconnecter</button>`;
+      } else {
+        authButtonsDiv.innerHTML = `<button class="btn-primary py-2 px-4 rounded text-white" id="login-btn-main">Se connecter</button>`;
+        sidebarAuthDiv.innerHTML = `<button class="btn-primary py-2 px-4 rounded text-white w-full" id="login-btn-sidebar">Se connecter</button>`;
+      }
+      
+      if (document.getElementById('login-btn-main')) {
+        document.getElementById('login-btn-main').onclick = function() {
+          showLoginModal();
+        };
+      }
+      if (document.getElementById('login-btn-sidebar')) {
+        document.getElementById('login-btn-sidebar').onclick = function() {
+          showLoginModal();
+        };
+      }
+      if (document.getElementById('logout-btn-main')) {
+        document.getElementById('logout-btn-main').onclick = function() {
+          auth.signOut();
+        };
+      }
+      if (document.getElementById('logout-btn-sidebar')) {
+        document.getElementById('logout-btn-sidebar').onclick = function() {
+          auth.signOut();
+        };
+      }
+    }
+  }
+
+  function renderGuideCompletLink(user) {
+    const sidebarGuideDiv = document.getElementById('sidebar-guide-link');
+    if (sidebarGuideDiv) {
+      if (user) {
+        sidebarGuideDiv.innerHTML = `<a href="Formation.html" class="flex items-center justify-center p-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-all">
+          <i class="fas fa-book mr-2"></i>
+          <span>Accéder au guide complet</span>
+        </a>`;
+      } else {
+        sidebarGuideDiv.innerHTML = `<button class="flex items-center justify-center p-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-all w-full" id="sidebar-guide-login-btn">
+          <i class="fas fa-book mr-2"></i>
+          <span>Accéder au guide complet</span>
+        </button>`;
+        document.getElementById('sidebar-guide-login-btn').onclick = function() {
+          showLoginModal();
+        };
+      }
+    }
+  }
+
+  function handleGuideLinks(user) {
+    document.querySelectorAll('.guide-link').forEach(link => {
+      link.onclick = function(e) {
+        e.preventDefault();
+        if (user) {
+          window.location.href = "Formation.html";
+        } else {
+          showLoginModal();
+        }
+      };
+    });
+  }
+
+  function renderMenu() {
+    const menuContainer = document.getElementById('site-menu');
+    if (menuContainer) {
+      menuContainer.innerHTML = `
+        <nav class="bg-white shadow-md">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+              <div class="flex">
+                <div class="flex-shrink-0 flex items-center">
+                  <a href="index.html" class="text-xl font-bold text-indigo-600">MyMyBusiness Guide</a>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                  <a href="index.html" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    Accueil
+                  </a>
+                  <a href="Formation.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium guide-link">
+                    Formation
+                  </a>
+                  <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    À propos
+                  </a>
+                  <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    Contact
+                  </a>
+                </div>
+              </div>
+              <div class="hidden sm:ml-6 sm:flex sm:items-center" id="auth-buttons">
+                <!-- Auth buttons will be rendered here -->
+              </div>
+              <div class="flex items-center sm:hidden">
+                <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                  <span class="sr-only">Ouvrir le menu</span>
+                  <i class="fas fa-bars"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+              <a href="index.html" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                Accueil
+              </a>
+              <a href="Formation.html" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium guide-link">
+                Formation
+              </a>
+              <a href="#" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                À propos
+              </a>
+              <a href="#" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                Contact
+              </a>
+              <div class="pt-4 pb-3 border-t border-gray-200" id="sidebar-auth-buttons">
+                <!-- Sidebar auth buttons will be rendered here -->
+              </div>
+              <div class="pt-2 pb-3" id="sidebar-guide-link">
+                <!-- Guide link will be rendered here -->
+              </div>
+            </div>
+          </div>
+        </nav>
+      `;
+
+      // Toggle mobile menu
+      document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  }
+
+  function showLoginModal() {
+    if (document.getElementById('firebase-login-modal')) {
+      document.getElementById('firebase-login-modal').classList.remove('hidden');
+      return;
+    }
+    const modal = document.createElement('div');
+    modal.id = "firebase-login-modal";
+    modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60";
+    modal.innerHTML = `
+      <div class="bg-white rounded-xl shadow-lg max-w-sm w-full p-8 relative">
+        <button id="close-login-modal" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700"><i class="fas fa-times"></i></button>
+        <h3 class="text-2xl font-bold mb-6 text-center">Connexion</h3>
+        <form id="firebase-login-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <input type="email" id="login-email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Mot de passe</label>
+            <input type="password" id="login-password" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+          </div>
+          <button type="submit" class="w-full btn-primary text-white py-2 px-4 rounded-lg font-semibold">Se connecter</button>
+          <div class="text-center mt-2">
+            <button type="button" id="google-login-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center justify-center"><i class="fab fa-google mr-2"></i> Connexion Google</button>
+          </div>
+          <div class="text-center mt-4">
+            <span class="text-slate-500 text-sm">Pas encore de compte ? <a href="#" id="show-register" class="text-indigo-600 hover:underline">Créer un compte</a></span>
+          </div>
+          <div class="text-center mt-2">
+            <a href="#" id="show-reset" class="text-indigo-500 text-xs hover:underline">Mot de passe oublié ?</a>
+          </div>
+          <div id="login-error" class="text-red-500 text-sm mt-2 hidden"></div>
+        </form>
+        <form id="firebase-register-form" class="space-y-4 hidden">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <input type="email" id="register-email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Mot de passe</label>
+            <input type="password" id="register-password" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+          </div>
+          <button type="submit" class="w-full btn-primary text-white py-2 px-4 rounded-lg font-semibold">Créer un compte</button>
+          <div class="text-center mt-2">
+            <button type="button" id="google-register-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center justify-center"><i class="fab fa-google mr-2"></i> Inscription Google</button>
+          </div>
+          <div class="text-center mt-4">
+            <span class="text-slate-500 text-sm">Déjà inscrit ? <a href="#" id="show-login" class="text-indigo-600 hover:underline">Se connecter</a></span>
+          </div>
+          <div id="register-error" class="text-red-500 text-sm mt-2 hidden"></div>
+        </form>
+        <form id="firebase-reset-form" class="space-y-4 hidden">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <input type="email" id="reset-email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+          </div>
+          <button type="submit" class="w-full btn-primary text-white py-2 px-4 rounded-lg font-semibold">Réinitialiser le mot de passe</button>
+          <div class="text-center mt-4">
+            <span class="text-slate-500 text-sm">Retour à <a href="#" id="show-login2" class="text-indigo-600 hover:underline">la connexion</a></span>
+          </div>
+          <div id="reset-error" class="text-red-500 text-sm mt-2 hidden"></div>
+          <div id="reset-success" class="text-green-600 text-sm mt-2 hidden"></div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById('close-login-modal').onclick = function() {
+      modal.classList.add('hidden');
+    };
+    document.getElementById('show-register').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('firebase-login-form').classList.add('hidden');
+      document.getElementById('firebase-register-form').classList.remove('hidden');
+      document.getElementById('firebase-reset-form').classList.add('hidden');
+    };
+    document.getElementById('show-login').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('firebase-login-form').classList.remove('hidden');
+      document.getElementById('firebase-register-form').classList.add('hidden');
+      document.getElementById('firebase-reset-form').classList.add('hidden');
+    };
+    document.getElementById('show-login2').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('firebase-login-form').classList.remove('hidden');
+      document.getElementById('firebase-register-form').classList.add('hidden');
+      document.getElementById('firebase-reset-form').classList.add('hidden');
+    };
+    document.getElementById('show-reset').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('firebase-login-form').classList.add('hidden');
+      document.getElementById('firebase-register-form').classList.add('hidden');
+      document.getElementById('firebase-reset-form').classList.remove('hidden');
+    };
+    document.getElementById('firebase-login-form').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('login-error').classList.add('hidden');
+      auth.signInWithEmailAndPassword(
+        document.getElementById('login-email').value,
+        document.getElementById('login-password').value
+      ).then(() => {
+        modal.classList.add('hidden');
+      }).catch(err => {
+        document.getElementById('login-error').textContent = err.message;
+        document.getElementById('login-error').classList.remove('hidden');
+      });
+    };
+    document.getElementById('firebase-register-form').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('register-error').classList.add('hidden');
+      auth.createUserWithEmailAndPassword(
+        document.getElementById('register-email').value,
+        document.getElementById('register-password').value
+      ).then(() => {
+        modal.classList.add('hidden');
+      }).catch(err => {
+        document.getElementById('register-error').textContent = err.message;
+        document.getElementById('register-error').classList.remove('hidden');
+      });
+    };
+    document.getElementById('firebase-reset-form').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('reset-error').classList.add('hidden');
+      document.getElementById('reset-success').classList.add('hidden');
+      auth.sendPasswordResetEmail(document.getElementById('reset-email').value)
+        .then(() => {
+          document.getElementById('reset-success').textContent = "Email de réinitialisation envoyé.";
+          document.getElementById('reset-success').classList.remove('hidden');
+        })
+        .catch(err => {
+          document.getElementById('reset-error').textContent = err.message;
+          document.getElementById('reset-error').classList.remove('hidden');
+        });
+    };
+    document.getElementById('google-login-btn').onclick = function(e) {
+      e.preventDefault();
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).then(() => {
+        modal.classList.add('hidden');
+      }).catch(err => {
+        document.getElementById('login-error').textContent = err.message;
+        document.getElementById('login-error').classList.remove('hidden');
+      });
+    };
+    document.getElementById('google-register-btn').onclick = function(e) {
+      e.preventDefault();
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).then(() => {
+        modal.classList.add('hidden');
+      }).catch(err => {
+        document.getElementById('register-error').textContent = err.message;
+        document.getElementById('register-error').classList.remove('hidden');
+      });
+    };
+  }
+
+  function updateActiveMenuLink() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const menuLinks = document.querySelectorAll('nav a');
+    
+    menuLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === currentPage) {
+        link.classList.add('border-indigo-500', 'text-gray-900');
+        link.classList.remove('border-transparent', 'text-gray-500', 'hover:border-gray-300', 'hover:text-gray-700');
+      } else {
+        link.classList.remove('border-indigo-500', 'text-gray-900', 'bg-indigo-50', 'text-indigo-700');
+        if (!link.classList.contains('guide-link')) {
+          link.classList.add('border-transparent', 'text-gray-500', 'hover:border-gray-300', 'hover:text-gray-700');
+        }
+      }
+    });
+  }
+
+  function initializePage() {
+    renderMenu();
+    renderAuthButtons(auth.currentUser);
+    renderGuideCompletLink(auth.currentUser);
+    handleGuideLinks(auth.currentUser);
+    updateActiveMenuLink();
+  }
+
+  auth.onAuthStateChanged(function(user) {
+    renderAuthButtons(user);
+    renderGuideCompletLink(user);
+    handleGuideLinks(user);
+  });
+
+  window.addEventListener('DOMContentLoaded', function() {
+    initializePage();
+  });
+</script>
+
   </body>
 </html>
